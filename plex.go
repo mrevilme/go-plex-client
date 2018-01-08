@@ -205,6 +205,30 @@ func (p *Plex) GetMetadataChildren(key string) (MetadataChildren, error) {
 	return results, nil
 }
 
+// RecentlyAdded returns recently added to specific library.
+func (p *Plex) GetRecentlyAdded() (SearchResults, error) {
+	query := fmt.Sprintf("%s/library/recentlyAdded", p.URL)
+	resp, err := p.get(query, defaultHeaders())
+	if err != nil {
+		return SearchResults{}, err
+	}
+
+	// Unauthorized
+	if resp.StatusCode == 401 {
+		return SearchResults{}, errors.New("You are not authorized to access that server")
+	}
+
+	defer resp.Body.Close()
+	var results SearchResults
+
+	if err := json.NewDecoder(resp.Body).Decode(&results); err != nil {
+		return SearchResults{}, err
+	}
+
+	return results, nil
+
+}
+
 // GetEpisodes returns episodes of a season of a show
 func (p *Plex) GetEpisodes(key string) (SearchResultsEpisode, error) {
 	if key == "" {

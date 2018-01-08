@@ -52,6 +52,8 @@ type SearchResults struct {
 			UpdatedAt             int64   `json:"updatedAt"`
 			ViewCount             int64   `json:"viewCount"`
 			ViewedLeafCount       int64   `json:"viewedLeafCount"`
+			ParentTitle			  string  `json:"parentTitle"`
+			ParentSummary		  string  `json:"parentSummary"`
 			Year                  int64   `json:"year"`
 		} `json:"Metadata"`
 		Provider []struct {
